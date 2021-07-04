@@ -1,0 +1,7 @@
+
+library(readxl)
+
+
+rec_dat <- read_excel("./data/raw/recording_list.xlsx")
+
+file.copy(file.path("~/Dropbox/Projects/terrestrial_vertebrate_vocal_transmission/data/raw/frogs/", rec_dat$SOUND_FILES), file.path("./data/raw", rec_dat$SOUND_FILES))
