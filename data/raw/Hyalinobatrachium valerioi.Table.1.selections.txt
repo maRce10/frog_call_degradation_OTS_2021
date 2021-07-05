@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.644163018	0.746454999	0.0	22323.1	Hyalinobatrachium valerioi.wav	0.6442
+1	Spectrogram 1	1	0.644163018	0.746454999	0.0	22323.1	Hyalinobatrachium valerioi.wav	0.6442
+2	Waveform 1	1	11.734267993	11.822736733	0.0	22532.8	Hyalinobatrachium valerioi.wav	11.7343
+2	Spectrogram 1	1	11.734267993	11.822736733	0.0	22532.8	Hyalinobatrachium valerioi.wav	11.7343

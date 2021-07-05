@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.873236835	1.192103877	0.0	17428.2	D_ebracattus_GUAYACAN.wav	0.8732
+1	Spectrogram 1	1	0.873236835	1.192103877	0.0	17428.2	D_ebracattus_GUAYACAN.wav	0.8732
+2	Waveform 1	1	3.963323822	4.279405999	0.0	17813.3	D_ebracattus_GUAYACAN.wav	3.9633
+2	Spectrogram 1	1	3.963323822	4.279405999	0.0	17813.3	D_ebracattus_GUAYACAN.wav	3.9633

@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	1.633886224	2.062184966	0.0	4973.0	data_raw_7313Scinax_boulengeri.wav	1.6339
+1	Spectrogram 1	1	1.633886224	2.062184966	0.0	4973.0	data_raw_7313Scinax_boulengeri.wav	1.6339
+2	Waveform 1	1	6.676310532	7.094362893	0.0	4597.7	data_raw_7313Scinax_boulengeri.wav	6.6763
+2	Spectrogram 1	1	6.676310532	7.094362893	0.0	4597.7	data_raw_7313Scinax_boulengeri.wav	6.6763

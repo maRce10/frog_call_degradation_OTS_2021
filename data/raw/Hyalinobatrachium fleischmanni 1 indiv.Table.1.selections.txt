@@ -1,0 +1,11 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	15.109928514	15.286885089	0.0	16850.4	Hyalinobatrachium fleischmanni 1 indiv.wav	15.1099
+1	Spectrogram 1	1	15.109928514	15.286885089	0.0	16850.4	Hyalinobatrachium fleischmanni 1 indiv.wav	15.1099
+2	Waveform 1	1	29.209040863	29.385997438	385.2	13287.8	Hyalinobatrachium fleischmanni 1 indiv.wav	29.2090
+2	Spectrogram 1	1	29.209040863	29.385997438	385.2	13287.8	Hyalinobatrachium fleischmanni 1 indiv.wav	29.2090
+3	Waveform 1	1	49.223484178	49.336098653	0.0	20220.5	Hyalinobatrachium fleischmanni 1 indiv.wav	49.2235
+3	Spectrogram 1	1	49.223484178	49.336098653	0.0	20220.5	Hyalinobatrachium fleischmanni 1 indiv.wav	49.2235
+4	Waveform 1	1	63.708792123	63.821406598	0.0	19065.1	Hyalinobatrachium fleischmanni 1 indiv.wav	63.7088
+4	Spectrogram 1	1	63.708792123	63.821406598	0.0	19065.1	Hyalinobatrachium fleischmanni 1 indiv.wav	63.7088
+5	Waveform 1	1	77.440898392	77.559769226	0.0	20509.4	Hyalinobatrachium fleischmanni 1 indiv.wav	77.4409
+5	Spectrogram 1	1	77.440898392	77.559769226	0.0	20509.4	Hyalinobatrachium fleischmanni 1 indiv.wav	77.4409

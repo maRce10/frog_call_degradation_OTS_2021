@@ -1,0 +1,9 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	1.419190749	1.743399296	1829.5	17620.7	Cochranella granulosa.wav	1.4192
+1	Spectrogram 1	1	1.419190749	1.743399296	1829.5	17620.7	Cochranella granulosa.wav	1.4192
+2	Waveform 1	1	1.863670209	2.018802256	1540.6	16946.7	Cochranella granulosa.wav	1.8637
+2	Spectrogram 1	1	1.863670209	2.018802256	1540.6	16946.7	Cochranella granulosa.wav	1.8637
+3	Waveform 1	1	2.182000464	2.349624165	0.0	17139.3	Cochranella granulosa.wav	2.1820
+3	Spectrogram 1	1	2.182000464	2.349624165	0.0	17139.3	Cochranella granulosa.wav	2.1820
+4	Waveform 1	1	2.504966397	2.650360806	0.0	17331.9	Cochranella granulosa.wav	2.5050
+4	Spectrogram 1	1	2.504966397	2.650360806	0.0	17331.9	Cochranella granulosa.wav	2.5050

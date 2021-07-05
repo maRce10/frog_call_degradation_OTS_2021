@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.127364569	2.928577859	885.1	19036.3	P_vitattus.wav	0.1274
+1	Spectrogram 1	1	0.127364569	2.928577859	885.1	19036.3	P_vitattus.wav	0.1274
+2	Waveform 1	1	4.496581270	11.867456630	770.3	17909.6	P_vitattus.wav	4.4966
+2	Spectrogram 1	1	4.496581270	11.867456630	770.3	17909.6	P_vitattus.wav	4.4966

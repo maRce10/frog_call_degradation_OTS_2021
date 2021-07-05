@@ -1,0 +1,7 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	1.591766272	1.818425547	630.0	18450.0	C_crassidigitus_SANRAMON.wav	1.5918
+1	Spectrogram 1	1	1.591766272	1.818425547	630.0	18450.0	C_crassidigitus_SANRAMON.wav	1.5918
+4	Waveform 1	1	7.169987412	7.360587257	2636.4	19653.3	C_crassidigitus_SANRAMON.wav	7.1700
+4	Spectrogram 1	1	7.169987412	7.360587257	2636.4	19653.3	C_crassidigitus_SANRAMON.wav	7.1700
+5	Waveform 1	1	11.808789783	12.062470117	838.9	19173.9	C_crassidigitus_SANRAMON.wav	11.8088
+5	Spectrogram 1	1	11.808789783	12.062470117	838.9	19173.9	C_crassidigitus_SANRAMON.wav	11.8088

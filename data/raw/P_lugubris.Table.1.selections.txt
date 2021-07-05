@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.751817562	4.843287875	1348.0	14154.4	P_lugubris.wav	0.7518
+1	Spectrogram 1	1	0.751817562	4.843287875	1348.0	14154.4	P_lugubris.wav	0.7518
+2	Waveform 1	1	9.882319723	13.692847684	1059.2	14924.7	P_lugubris.wav	9.8823
+2	Spectrogram 1	1	9.882319723	13.692847684	1059.2	14924.7	P_lugubris.wav	9.8823

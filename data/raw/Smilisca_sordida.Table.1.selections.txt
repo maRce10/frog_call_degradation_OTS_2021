@@ -1,0 +1,9 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.832499075	1.404563947	0.0	22050.0	data_raw_7448Smilisca_sordida.wav	0.8325
+1	Spectrogram 1	1	0.832499075	1.404563947	0.0	22050.0	data_raw_7448Smilisca_sordida.wav	0.8325
+2	Waveform 1	1	1.413467680	1.969951019	0.0	7693.7	data_raw_7448Smilisca_sordida.wav	1.4135
+2	Spectrogram 1	1	1.413467680	1.969951019	0.0	7693.7	data_raw_7448Smilisca_sordida.wav	1.4135
+3	Waveform 1	1	2.660388525	3.265842398	0.0	3812.8	data_raw_7448Smilisca_sordida.wav	2.6604
+3	Spectrogram 1	1	2.660388525	3.265842398	0.0	3812.8	data_raw_7448Smilisca_sordida.wav	2.6604
+4	Waveform 1	1	3.311647090	3.843645162	544.7	3812.8	data_raw_7448Smilisca_sordida.wav	3.3116
+4	Spectrogram 1	1	3.311647090	3.843645162	544.7	3812.8	data_raw_7448Smilisca_sordida.wav	3.3116

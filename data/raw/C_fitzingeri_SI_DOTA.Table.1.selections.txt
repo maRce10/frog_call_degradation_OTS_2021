@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	1.721247096	4.234572503	0.0	22050.0	C_fitzingeri_SI_DOTA.wav	1.7212
+1	Spectrogram 1	1	1.721247096	4.234572503	0.0	22050.0	C_fitzingeri_SI_DOTA.wav	1.7212
+2	Waveform 1	1	15.744631466	18.257956872	962.9	7991.9	C_fitzingeri_SI_DOTA.wav	15.7446
+2	Spectrogram 1	1	15.744631466	18.257956872	962.9	7991.9	C_fitzingeri_SI_DOTA.wav	15.7446

@@ -1,0 +1,9 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.751570419	2.338938976	577.7	18391.0	D_phlebodesRIOFRIO.wav	0.7516
+1	Spectrogram 1	1	0.751570419	2.338938976	577.7	18391.0	D_phlebodesRIOFRIO.wav	0.7516
+2	Waveform 1	1	6.327235669	6.852039151	192.6	17139.3	D_phlebodesRIOFRIO.wav	6.3272
+2	Spectrogram 1	1	6.327235669	6.852039151	192.6	17139.3	D_phlebodesRIOFRIO.wav	6.3272
+3	Waveform 1	1	9.757755451	10.250163657	770.3	18102.2	D_phlebodesRIOFRIO.wav	9.7578
+3	Spectrogram 1	1	9.757755451	10.250163657	770.3	18102.2	D_phlebodesRIOFRIO.wav	9.7578
+4	Waveform 1	1	19.499484883	20.989667610	1348.0	17909.6	D_phlebodesRIOFRIO.wav	19.4995
+4	Spectrogram 1	1	19.499484883	20.989667610	1348.0	17909.6	D_phlebodesRIOFRIO.wav	19.4995

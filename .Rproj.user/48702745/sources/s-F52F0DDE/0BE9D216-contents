@@ -12,3 +12,9 @@ library(warbleR)
 mp32wav(samp.rate = 44.1, path = "./data/raw/")
 
 wav_info(path = "./data/raw/")
+
+
+library(baRulho)
+
+devtools::install_github("maRce10/Rraven")
+library(Rraven)

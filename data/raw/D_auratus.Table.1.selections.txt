@@ -1,0 +1,5 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.068232208	1.835446391	953.2	5038.4	D_auratus.wav	0.0682
+1	Spectrogram 1	1	0.068232208	1.835446391	953.2	5038.4	D_auratus.wav	0.0682
+2	Waveform 1	1	6.286638924	8.302900665	1089.4	4834.1	D_auratus.wav	6.2866
+2	Spectrogram 1	1	6.286638924	8.302900665	1089.4	4834.1	D_auratus.wav	6.2866
