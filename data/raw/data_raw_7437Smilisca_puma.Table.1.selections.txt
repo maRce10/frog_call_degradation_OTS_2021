@@ -1,0 +1,25 @@
+Selection	View	Channel	Begin Time (s)	End Time (s)	Low Freq (Hz)	High Freq (Hz)	Begin File	File Offset (s)
+1	Waveform 1	1	0.758685538	0.771706159	154.196	3199.563	data_raw_7437Smilisca_puma.wav	0.7587
+1	Spectrogram 1	1	0.758685538	0.771706159	154.196	3199.563	data_raw_7437Smilisca_puma.wav	0.7587
+2	Waveform 1	1	0.778768190	0.794878449	462.587	4009.091	data_raw_7437Smilisca_puma.wav	0.7788
+2	Spectrogram 1	1	0.778768190	0.794878449	462.587	4009.091	data_raw_7437Smilisca_puma.wav	0.7788
+3	Waveform 1	1	0.799512908	0.807899070	308.392	3931.993	data_raw_7437Smilisca_puma.wav	0.7995
+3	Spectrogram 1	1	0.799512908	0.807899070	308.392	3931.993	data_raw_7437Smilisca_puma.wav	0.7995
+4	Waveform 1	1	0.817167986	0.831292049	539.685	3970.542	data_raw_7437Smilisca_puma.wav	0.8172
+4	Spectrogram 1	1	0.817167986	0.831292049	539.685	3970.542	data_raw_7437Smilisca_puma.wav	0.8172
+5	Waveform 1	1	1.002689405	1.017916910	231.294	3045.367	data_raw_7437Smilisca_puma.wav	1.0027
+5	Spectrogram 1	1	1.002689405	1.017916910	231.294	3045.367	data_raw_7437Smilisca_puma.wav	1.0027
+6	Waveform 1	1	1.036013366	1.058744279	115.647	3199.563	data_raw_7437Smilisca_puma.wav	1.0360
+6	Spectrogram 1	1	1.036013366	1.058744279	115.647	3199.563	data_raw_7437Smilisca_puma.wav	1.0360
+7	Waveform 1	1	1.136426043	1.150108728	424.038	3469.406	data_raw_7437Smilisca_puma.wav	1.1364
+7	Spectrogram 1	1	1.136426043	1.150108728	424.038	3469.406	data_raw_7437Smilisca_puma.wav	1.1364
+8	Waveform 1	1	1.192797165	1.205597097	346.941	4240.385	data_raw_7437Smilisca_puma.wav	1.1928
+8	Spectrogram 1	1	1.192797165	1.205597097	346.941	4240.385	data_raw_7437Smilisca_puma.wav	1.1928
+9	Waveform 1	1	1.454187306	1.467097582	0.000	3395.656	data_raw_7437Smilisca_puma.wav	1.4542
+9	Spectrogram 1	1	1.454187306	1.467097582	0.000	3395.656	data_raw_7437Smilisca_puma.wav	1.4542
+10	Waveform 1	1	1.508390095	1.524279666	0.000	4912.895	data_raw_7437Smilisca_puma.wav	1.5084
+10	Spectrogram 1	1	1.508390095	1.524279666	0.000	4912.895	data_raw_7437Smilisca_puma.wav	1.5084
+11	Waveform 1	1	1.576189284	1.588768527	696.316	4874.211	data_raw_7437Smilisca_puma.wav	1.5762
+11	Spectrogram 1	1	1.576189284	1.588768527	696.316	4874.211	data_raw_7437Smilisca_puma.wav	1.5762
+12	Waveform 1	1	1.876439346	1.897184063	425.526	4216.579	data_raw_7437Smilisca_puma.wav	1.8764
+12	Spectrogram 1	1	1.876439346	1.897184063	425.526	4216.579	data_raw_7437Smilisca_puma.wav	1.8764

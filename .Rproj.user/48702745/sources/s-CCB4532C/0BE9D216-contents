@@ -53,5 +53,7 @@ spectro(read_wave(est, 2, from = 0, to = Inf))
 msf <- master_sound_file(est, gap.duration =  0.15, file.name = "master_sound_flie_frogs_OTS_2021.wav")
 
 
-exp_raven(msf)
+save
 
+exp_raven(msf)
+Rraven::fix_path(new.begin.path = "C:/Users/Daniel Andres/Raven Pr")
