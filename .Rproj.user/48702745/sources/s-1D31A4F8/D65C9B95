@@ -1,0 +1,28 @@
+{
+    "id": "D65C9B95",
+    "path": "~/Dropbox/Projects/frog_call_degradation_OTS_2021/scripts/acostic_analysis.Rmd",
+    "project_path": "scripts/acostic_analysis.Rmd",
+    "type": "r_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1625537603030.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "184,0",
+        "scrollLine": "172",
+        "chunk_output_type": "console"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1625580292,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1625622587805,
+    "read_only": false,
+    "read_only_alternatives": []
+}

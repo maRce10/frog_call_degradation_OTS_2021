@@ -1,0 +1,26 @@
+{
+    "id": "114B2608",
+    "path": "~/Dropbox/R_package_testing/sketchy/sketchy/R/add_to_gitignore.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1625622116716.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "57,0",
+        "scrollLine": "45"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1612916045,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1625622311480,
+    "read_only": false,
+    "read_only_alternatives": []
+}

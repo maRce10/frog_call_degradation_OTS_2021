@@ -1,0 +1,360 @@
+---
+title: "Stats on degradation simulations"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r packages, message=FALSE, warning = FALSE, echo = FALSE, eval = TRUE, include = FALSE}
+
+rm(list = ls())
+
+# unload all non-based packages
+out <- sapply(paste('package:', names(sessionInfo()$otherPkgs), sep = ""), function(x) try(detach(x, unload = FALSE, character.only = TRUE), silent = T))
+
+## add 'developer/' to packages to be installed from github
+x <- c("maRce10/Rraven", "maRce10/warbleR", "maRce10/baRulho", "pbapply", "ggplot2", "lme4", "tidyr", "viridis")
+
+aa <- lapply(x, function(y) {
+  
+  # get pakage name
+  pkg <- strsplit(y, "/")[[1]]
+  pkg <- pkg[length(pkg)]
+  
+  # check if installed, if not then install 
+  if (!pkg %in% installed.packages()[,"Package"])  {
+
+      if (grepl("/", y))  devtools::install_github(y, force = TRUE) else
+    install.packages(y) 
+    }
+
+  # load package
+  try(require(pkg, character.only = T), silent = T)
+})
+
+```
+
+```{r read data, eval = TRUE, echo = FALSE, warning=FALSE, message=FALSE, include=FALSE}
+
+mets <- read.csv("degradation_metrics_simulations.csv", stringsAsFactors = FALSE)
+
+names(mets)[names(mets) == "Vegetacion"] <- "Habitat_structure"
+
+mets$Habitat_structure <- ifelse(mets$Habitat_structure == "abierta", "open", "closed")
+
+mets <- separate(mets, col = signal.type, into = c("Duration", "Freq_modulation", "Amp_modulation", "Harmonicity", "delete"), remove = FALSE, sep = "_")
+
+mets$Duration <- ifelse(mets$Duration == 0.1, "short", "long")
+mets$`Freq_modulation` <- ifelse(mets$`Freq_modulation` == "BB", "fm", "no_fm")
+mets$Harmonicity <- gsub(".wav", "", mets$Harmonicity)
+mets$delete <- NULL
+
+mets$categ <- paste(mets$Habitat_structure, as.numeric(mets$sim.freq), sep = "-")
+
+mets$freq <- as.numeric(mets$sim.freq)
+mets$spectral.blur.ratio <- as.numeric(mets$spectral.blur.ratio)
+
+
+cols <- viridis(10)[c(3, 8)]
+
+cols2 <- viridis(10)[c(3, 6)]
+
+```
+
+```{r means, eval = FALSE, echo = FALSE}
+
+
+out <- lapply(unique(mets$categ), function(x){
+    
+  X <- mets[mets$categ == x, ]
+  (X$spectral.blur.ratio)
+  xcorr <- cor(X$distance, X$cross.correlation)
+  snr <- cor(X$distance, X$snr.attenuation)
+  ea <- cor(X$distance, X$excess.attenuation)
+  ec <- cor(X$distance, X$envelope.correlation)
+  br <- cor(X$distance, X$blur.ratio)
+  sc <- cor(X$distance, X$spectral.correlation)
+ sc <- cor(X$distance, X$spectral.correlation)
+  sbr <- cor(X$distance, as.numeric(X$spectral.blur.ratio), use = "pairwise.complete.obs")
+  return(data.frame(veg =  X$Habitat_structure[1], freq = X$sim.freq[1], xcorr = xcorr, snr = snr, ea= ea, ec = ec, br = br, sc = sc, sbr = sbr))
+  
+})
+
+res <- do.call(rbind, out)
+
+colMeans(res[ res$veg == "open", -c(1, 2)])
+colMeans(res[ res$veg == "closed", -c(1, 2)])
+
+```
+
+# Habitat structure
+```{r plots hab, eval = TRUE, echo = FALSE, fig.width= 10}
+
+vars <- c("cross.correlation", "snr.attenuation", "excess.attenuation", "envelope.correlation", "blur.ratio", "spectral.correlation", "spectral.blur.ratio")
+
+plts <- lapply(vars, function(x){
+  
+  if (x == "spectral.blur.ratio") mets <- mets[!is.na(mets$spectral.blur.ratio), ]
+
+  form <- as.formula(paste(x, "~ freq + Habitat_structure + distance"))
+  
+  agg <- aggregate(form, data = mets, mean)
+  
+  names(agg)[ncol(agg)] <- "variable"
+  
+  agg$sd <- aggregate(form, data = mets, sd)[, x] 
+  
+  plt <- ggplot(agg, aes(x = freq, y = variable, col = Habitat_structure, group = Habitat_structure)) +
+    geom_line(position = position_dodge(0.25)) +
+    geom_point(position = position_dodge(0.25))+
+    scale_color_manual(values=cols) +
+    geom_errorbar(aes(ymin = variable - sd, 
+                      ymax = variable + sd), width = .2,
+                   position = position_dodge(0.25)) +
+    facet_wrap(~distance) + 
+    labs(x = "Frequency (kHz)", y = x) +
+    theme_classic() 
+  
+  return(plt)
+    
+})
+
+names(plts) <- vars
+
+for(i in 1:length(plts)){
+  
+  print(names(plts)[i])
+
+  print(plts[[i]])
+  }
+  
+```
+
+# Frequency modulation and habitat structure
+```{r plots fm, eval = TRUE, echo = FALSE, fig.height = 10, fig.width= 10}
+
+vars <- c("cross.correlation", "snr.attenuation", "excess.attenuation", "envelope.correlation", "blur.ratio", "spectral.correlation", "spectral.blur.ratio")
+
+plts <- lapply(vars, function(x){
+  
+  if (x == "spectral.blur.ratio") mets <- mets[!is.na(mets$spectral.blur.ratio), ]
+
+  form <- as.formula(paste(x, "~ freq + Habitat_structure + distance + Freq_modulation"))
+  
+  agg <- aggregate(form, data = mets, mean)
+  
+  names(agg)[ncol(agg)] <- "variable"
+  
+  agg$sd <- aggregate(form, data = mets, sd)[, x] 
+  
+  plt <- ggplot(agg, aes(x = freq, y = variable, col = Freq_modulation, group =  Freq_modulation)) +
+    geom_line(position = position_dodge(0.25)) +
+    geom_point(position = position_dodge(0.25))+
+    scale_color_manual(values=cols) +
+    geom_errorbar(aes(ymin = variable - sd, 
+                      ymax = variable + sd), width = .2,
+                   position = position_dodge(0.25)) +
+    facet_wrap(~distance + Habitat_structure, ncol = 2) + 
+    labs(x = "Frequency (kHz)", y = x) +
+    theme_classic() 
+  
+  return(plt)
+    
+})
+
+names(plts) <- vars
+
+for(i in 1:length(plts)){
+  
+  print(names(plts)[i])
+
+  print(plts[[i]])
+  }
+  
+  
+```
+
+
+# Amplitude modulation and habitat structure
+```{r plots amp, eval = TRUE, echo = FALSE, fig.height = 10, fig.width= 10}
+
+vars <- c("cross.correlation", "snr.attenuation", "excess.attenuation", "envelope.correlation", "blur.ratio", "spectral.correlation", "spectral.blur.ratio")
+
+plts <- lapply(vars, function(x){
+  
+  if (x == "spectral.blur.ratio") mets <- mets[!is.na(mets$spectral.blur.ratio), ]
+
+  form <- as.formula(paste(x, "~ freq + Habitat_structure + distance + Amp_modulation"))
+  
+  agg <- aggregate(form, data = mets, mean)
+  
+  names(agg)[ncol(agg)] <- "variable"
+  
+  agg$sd <- aggregate(form, data = mets, sd)[, x] 
+  
+  plt <- ggplot(agg, aes(x = freq, y = variable, col = Amp_modulation, group =  Amp_modulation)) +
+    geom_line(position = position_dodge(0.25)) +
+    geom_point(position = position_dodge(0.25))+
+    scale_color_manual(values=cols) +
+    geom_errorbar(aes(ymin = variable - sd, 
+                      ymax = variable + sd), width = .2,
+                   position = position_dodge(0.25)) +
+    facet_wrap(~distance + Habitat_structure, ncol = 2) + 
+    labs(x = "Frequency (kHz)", y = x) +
+    theme_classic() 
+  
+  return(plt)
+    
+})
+
+names(plts) <- vars
+
+for(i in 1:length(plts)){
+  
+  print(names(plts)[i])
+
+  print(plts[[i]])
+  }
+  
+```
+
+# Harmonicity and habitat structure
+```{r plots harm, eval = TRUE, echo = FALSE, fig.height = 10, fig.width= 10}
+
+vars <- c("cross.correlation", "snr.attenuation", "excess.attenuation", "envelope.correlation", "blur.ratio", "spectral.correlation", "spectral.blur.ratio")
+
+plts <- lapply(vars, function(x){
+  
+  if (x == "spectral.blur.ratio") mets <- mets[!is.na(mets$spectral.blur.ratio), ]
+
+  form <- as.formula(paste(x, "~ freq + Habitat_structure + distance + Harmonicity"))
+  
+  agg <- aggregate(form, data = mets, mean)
+  
+  names(agg)[ncol(agg)] <- "variable"
+  
+  agg$sd <- aggregate(form, data = mets, sd)[, x] 
+  
+  plt <- ggplot(agg, aes(x = freq, y = variable, col = Harmonicity, group =  Harmonicity)) +
+    geom_line(position = position_dodge(0.25)) +
+    geom_point(position = position_dodge(0.25))+
+    scale_color_manual(values=cols) +
+    geom_errorbar(aes(ymin = variable - sd, 
+                      ymax = variable + sd), width = .2,
+                   position = position_dodge(0.25)) +
+    facet_wrap(~distance + Habitat_structure, ncol = 2) + 
+    labs(x = "Frequency (kHz)", y = x) +
+    theme_classic() 
+  
+  return(plt)
+    
+})
+
+names(plts) <- vars
+
+for(i in 1:length(plts)){
+  
+  print(names(plts)[i])
+
+  print(plts[[i]])
+  }
+  
+```
+
+# Duration and habitat structure
+```{r plots dur, eval = TRUE, echo = FALSE, fig.height = 10, fig.width= 10}
+
+vars <- c("cross.correlation", "snr.attenuation", "excess.attenuation", "envelope.correlation", "blur.ratio", "spectral.correlation", "spectral.blur.ratio")
+
+plts <- lapply(vars, function(x){
+  
+  if (x == "spectral.blur.ratio") mets <- mets[!is.na(mets$spectral.blur.ratio), ]
+
+  form <- as.formula(paste(x, "~ freq + Habitat_structure + distance + Duration"))
+  
+  agg <- aggregate(form, data = mets, mean)
+  
+  names(agg)[ncol(agg)] <- "variable"
+  
+  agg$sd <- aggregate(form, data = mets, sd)[, x] 
+  
+  plt <- ggplot(agg, aes(x = freq, y = variable, col = Duration, group =  Duration)) +
+    geom_line(position = position_dodge(0.25)) +
+    geom_point(position = position_dodge(0.25))+
+    scale_color_manual(values=cols) +
+    geom_errorbar(aes(ymin = variable - sd, 
+                      ymax = variable + sd), width = .2,
+                   position = position_dodge(0.25)) +
+    facet_wrap(~distance + Habitat_structure, ncol = 2) + 
+    labs(x = "Frequency (kHz)", y = x) +
+    theme_classic() 
+  
+  return(plt)
+    
+})
+
+names(plts) <- vars
+
+for(i in 1:length(plts)){
+  
+  print(names(plts)[i])
+
+  print(plts[[i]])
+  }
+  
+```
+
+# Temperature
+```{r plots temp, eval = TRUE, echo = FALSE, fig.height = 3, fig.width = 10}
+
+vars <- c("cross.correlation", "snr.attenuation", "excess.attenuation", "envelope.correlation", "blur.ratio", "spectral.correlation", "spectral.blur.ratio")
+
+qnts <- quantile(mets$Temperatura, c(0.10, 0.90))
+
+sub.mets <- mets[mets$Temperatura < qnts[1] | mets$Temperatura > qnts[2], ]
+
+# sub.mets <- sub.mets[sub.mets$freq <= 2 | sub.mets$freq >= 8.5, ]
+
+sub.mets$temp.cat <- ifelse(sub.mets$Temperatura < qnts[1], "< 24 deg", "> 28 deg")  
+
+# sub.mets$freq.cat <- ifelse(sub.mets$freq <= 2, "< 2", ">8")  
+
+
+
+plts <- lapply(vars, function(x){
+  
+  if (x == "spectral.blur.ratio") sub.mets <- sub.mets[!is.na(sub.mets$spectral.blur.ratio), ]
+
+  form <- as.formula(paste(x, "~ freq + Habitat_structure + temp.cat"))
+  
+  agg <- aggregate(form, data = sub.mets, mean)
+  
+  names(agg)[ncol(agg)] <- "variable"
+  
+  agg$sd <- aggregate(form, data = sub.mets, sd)[, x] 
+  
+  plt <- ggplot(agg, aes(x = freq, y = variable, col = interaction(temp.cat, Habitat_structure), group =  interaction(temp.cat, Habitat_structure))) +
+    geom_line(position = position_dodge(0.25)) +
+    geom_point(position = position_dodge(0.25))+
+    scale_color_manual(values= viridis(10)[c(2, 4, 8, 10)]) +
+    geom_errorbar(aes(ymin = variable - sd, 
+                      ymax = variable + sd), width = .2,
+                   position = position_dodge(0.25)) +
+    # facet_wrap(~distance, ncol = 2) + 
+    labs(x = "Frequency (kHz)", y = x) +
+    theme_classic() 
+  
+  return(plt)
+    
+})
+
+names(plts) <- vars
+
+for(i in 1:length(plts)){
+  
+  print(names(plts)[i])
+
+  print(plts[[i]])
+  }
+  
+```

@@ -1,0 +1,270 @@
+---
+title: "Singing perch height and signal degradation in frogs"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+
+library(ggplot2)
+
+nitt <- 10000
+
+bs = 30
+
+library(MCMCglmm)
+```
+
+
+```{r, fig.width= 14, fig.height= 10}
+
+
+deg_dat <- readRDS("../data/processed/degradation_parameters.RDS")
+
+deg_dat$species.height <- as.numeric(deg_dat$species.stratum) - 0.5
+
+
+pca <- prcomp(deg_dat[, c("blur.ratio", "envelope.correlation", "SNR", "excess.attenuation")], scale. = TRUE)
+
+
+deg_dat$PC1 <- pca$x[, 1]
+summary(pca)
+
+pca$rotation
+
+
+agg_deg <- aggregate(cbind(blur.ratio, envelope.correlation, SNR, excess.attenuation, PC1) ~ distance + species.stratum + playback.stratum + species, data = deg_dat, mean)
+
+ggplot(agg_deg, aes(x = distance, y = blur.ratio, group = species, col = species.stratum)) + 
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_d() + 
+    labs(x = "Distance (m)", y = "Blur ratio", col = "Species stratum") + 
+    facet_wrap(~ playback.stratum) + 
+    theme_classic(base_size = bs)
+    
+
+ggplot(agg_deg, aes(x = distance, y = envelope.correlation, group = species, col = species.stratum)) + 
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_d() + 
+    labs(x = "Distance (m)", y = "Envelope correlation", col = "Species stratum") + 
+    facet_wrap(~ playback.stratum) + 
+    theme_classic(base_size = bs)
+
+
+ 
+ggplot(agg_deg, aes(x = distance, y = SNR, group = species, col = species.stratum)) +
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_d() +
+    labs(x = "Distance (m)", y = "Signal-to-noise ratio", col = "Species stratum") +
+    facet_wrap(~ playback.stratum) +
+    theme_classic(base_size = bs)
+
+
+ggplot(agg_deg, aes(x = distance, y = excess.attenuation, group = species, col = species.stratum)) + 
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_d() + 
+    labs(x = "Distance (m)", y = "Excess attenuation", col = "Species stratum") + 
+    facet_wrap(~ playback.stratum) + 
+    theme_classic(base_size = bs)
+
+
+ggplot(agg_deg, aes(x = distance, y = PC1, group = species, col = species.stratum)) + 
+    geom_point() +
+    geom_line() +
+    scale_color_viridis_d() + 
+    labs(x = "Distance (m)", y = "PC1 (overall degradation)", col = "Species stratum") + 
+    facet_wrap(~ playback.stratum) + 
+    theme_classic(base_size = bs)
+
+```
+
+
+### blur ratio
+```{r, eval = FALSE}
+
+
+mod1 <- MCMCglmm(blur.ratio ~ height + species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod2 <- MCMCglmm(blur.ratio ~ height * species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod3 <- MCMCglmm(blur.ratio ~ species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+mod4 <- MCMCglmm(blur.ratio ~ height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+
+br.mods <- list(mod1, mod2, mod3, mod4)
+
+saveRDS(br.mods, "blur.ratio.models.RDS")
+```
+
+
+```{r, eval = TRUE}
+
+br.mods <- readRDS("../blur.ratio.models.RDS")
+
+dics <- sapply(br.mods, function(x) x$DIC)
+dics <- dics - min(dics)
+
+
+names(dics) <- paste0("mod", 1:4)
+
+sort(dics)
+
+summary(br.mods[[which.min(dics)]])
+
+```
+
+### excess.attenuation
+```{r, eval = FALSE}
+
+
+mod1 <- MCMCglmm(excess.attenuation ~ height + species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod2 <- MCMCglmm(excess.attenuation ~ height * species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod3 <- MCMCglmm(excess.attenuation ~ species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+mod4 <- MCMCglmm(excess.attenuation ~ height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+ea.mods <- list(mod1, mod2, mod3, mod4)
+
+saveRDS(ea.mods, "excess.attenuation.models.RDS")
+```
+
+
+```{r, eval = TRUE}
+
+ea.mods <- readRDS("../excess.attenuation.models.RDS")
+
+dics <- sapply(ea.mods, function(x) x$DIC)
+dics <- dics - min(dics)
+
+
+names(dics) <- paste0("mod", 1:4)
+
+sort(dics)
+
+summary(ea.mods[[which.min(dics)]])
+
+```
+
+## envelope.correlation
+```{r, eval = FALSE}
+
+mod1 <- MCMCglmm(envelope.correlation ~ height + species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod2 <- MCMCglmm(envelope.correlation ~ height * species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod3 <- MCMCglmm(envelope.correlation ~ species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+mod4 <- MCMCglmm(envelope.correlation ~ height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+ec.mods <- list(mod1, mod2, mod3, mod4)
+
+saveRDS(ec.mods, "envelope.correlation.models.RDS")
+```
+
+
+```{r, eval = TRUE}
+
+ec.mods <- readRDS("../envelope.correlation.models.RDS")
+
+dics <- sapply(ec.mods, function(x) x$DIC)
+dics <- dics - min(dics)
+
+
+names(dics) <- paste0("mod", 1:4)
+
+sort(dics)
+
+summary(ec.mods[[which.min(dics)]])
+
+```
+
+
+## Signal-to-noise ratio
+```{r, eval = FALSE}
+
+mod1 <- MCMCglmm(SNR ~ height + species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod2 <- MCMCglmm(SNR ~ height * species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod3 <- MCMCglmm(SNR ~ species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+mod4 <- MCMCglmm(SNR ~ height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+snr.mods <- list(mod1, mod2, mod3, mod4)
+
+saveRDS(snr.mods, "snr.models.RDS")
+```
+
+
+```{r, eval = TRUE}
+
+snr.mods <- readRDS("../snr.models.RDS")
+
+dics <- sapply(snr.mods, function(x) x$DIC)
+dics <- dics - min(dics)
+
+
+names(dics) <- paste0("mod", 1:4)
+
+sort(dics)
+
+summary(ec.mods[[which.min(dics)]])
+
+```
+
+## PC1
+```{r, eval = FALSE}
+
+
+mod1 <- MCMCglmm(PC1 ~ height + species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod2 <- MCMCglmm(PC1 ~ height * species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+mod3 <- MCMCglmm(PC1 ~ species.height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+mod4 <- MCMCglmm(PC1 ~ height, random = ~ transect + signal.type + distance + species, data = deg_dat, verbose = FALSE, nitt = nitt)
+
+
+pc.mods <- list(mod1, mod2, mod3, mod4)
+
+saveRDS(pc.mods, "pc1.models.RDS")
+```
+
+
+```{r, eval = TRUE}
+
+pc.mods <- readRDS("../pc1.models.RDS")
+
+dics <- sapply(pc.mods, function(x) x$DIC)
+dics <- dics - min(dics)
+
+
+names(dics) <- paste0("mod", 1:4)
+
+sort(dics)
+
+summary(pc.mods[[which.min(dics)]])
+
+```

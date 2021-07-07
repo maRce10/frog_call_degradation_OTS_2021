@@ -52,8 +52,30 @@ spectro(read_wave(est, 2, from = 0, to = Inf))
 
 msf <- master_sound_file(est, gap.duration =  0.15, file.name = "master_sound_flie_frogs_OTS_2021.wav")
 
+write.csv(msf, "playback_selection_table_frogs_OTS_2021.csv", row.names = FALSE)
 
-save
 
-exp_raven(msf)
-Rraven::fix_path(new.begin.path = "C:/Users/Daniel Andres/Raven Pr")
+
+wv1 <- readWave("master_sound_flie_frogs_OTS_2021.wav", from = 2.02, to = 40, units = "seconds")
+
+
+library(dynaSpec)
+library(viridis)
+
+scrolling_spectro(wave = wv1, wl = 250, fps = 120, buffer = 0, 
+                  t.display = 5, ovlp = 99, pal = viridis, 
+                  grid = FALSE, flim = c(0, 6.1), width = 800, 
+                  height = 450, res = 120, collevels = seq(-50, 0, 5),
+                  file.name = "dynamic_spectrogram_master_sound_file.mp4", lcol = "#FFFFFFE6", colbg = "black", osc = TRUE, colwave = viridis(10,alpha = 0.8)[10])
+
+
+
+# bQeAEE4pV9C
+
+dyna
+
+
+
+############## measure
+
+

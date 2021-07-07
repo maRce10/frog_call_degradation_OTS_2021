@@ -1,0 +1,306 @@
+---
+title: "Untitled"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r make master sound file, eval = FALSE}
+
+# 
+# library(readxl)
+# 
+# 
+# rec_dat <- read_excel("./data/raw/recording_list.xlsx")
+# 
+# file.copy(file.path("~/Dropbox/Projects/terrestrial_vertebrate_vocal_transmission/data/raw/frogs/", rec_dat$SOUND_FILES), file.path("./data/raw", rec_dat$SOUND_FILES))
+# 
+# library(warbleR)
+# 
+# 
+# fix_wavs( path = "./data/raw/", samp.rate = 44.1)
+# # mp32wav(samp.rate = 44.1, path = "./data/raw/")
+# 
+# wav_info(path = "./data/raw/converted_sound_files/")
+# 
+
+library(baRulho)
+
+# devtools::install_github("maRce10/Rraven")
+library(Rraven)
+
+rav_dat <- imp_raven("./data/raw/", warbler.format = TRUE)
+
+rav_dat$sound.files[rav_dat$sound.files == "data_raw_7313Scinax_boulengeri.wav"] <- "7313Scinax_boulengeri.wav"
+
+rav_dat$sound.files[rav_dat$sound.files == "data_raw_7437Smilisca_puma.wav"] <- "7437Smilisca_puma.wav"
+
+rav_dat$sound.files[rav_dat$sound.files == "data_raw_7448Smilisca_sordida.wav"] <- "7448Smilisca_sordida.wav"
+rav_dat$top.freq[rav_dat$sound.files == "Hyalinobatrachium valerioi.wav"] <- 20
+
+rav_dat2 <- rav_dat 
+
+rav_dat2$selec <- 1:nrow(rav_dat2) + 1000
+
+rav_dat3 <- rbind(rav_dat, rav_dat2)
+
+rav_dat3 <- rav_dat3[sample(1:nrow(rav_dat3)), ]
+
+cs <- check_sels(rav_dat3, path = "./data/raw/converted_sound_files/")
+
+
+# cs[cs$check.res != "OK", ]
+
+est <- selection_table(rav_dat3, path = "./data/raw/converted_sound_files/", extended = TRUE, confirm.extended = FALSE)
+
+
+spectro(read_wave(est, 2, from = 0, to = Inf))
+
+
+# catalog(X = est, nrow = 40, ncol = 20, flim = c(0, 10))
+
+msf <- master_sound_file(est, gap.duration =  0.15, file.name = "master_sound_flie_frogs_OTS_2021.wav")
+
+write.csv(msf, "playback_selection_table_frogs_OTS_2021.csv", row.names = FALSE)
+
+
+
+wv1 <- readWave("master_sound_flie_frogs_OTS_2021.wav", from = 2.02, to = 40, units = "seconds")
+
+
+library(dynaSpec)
+library(viridis)
+
+scrolling_spectro(wave = wv1, wl = 250, fps = 120, buffer = 0, 
+                  t.display = 5, ovlp = 99, pal = viridis, 
+                  grid = FALSE, flim = c(0, 6.1), width = 800, 
+                  height = 450, res = 120, collevels = seq(-50, 0, 5),
+                  file.name = "dynamic_spectrogram_master_sound_file.mp4", lcol = "#FFFFFFE6", colbg = "black", osc = TRUE, colwave = viridis(10,alpha = 0.8)[10])
+
+
+
+# bQeAEE4pV9C
+
+
+```
+
+
+```{r detect rerecoded signals, eval = FALSE}
+
+rr_wvs <- list.files(path = "./data/raw/re-recorded_files/")
+rr_wvs
+str
+
+master.sf <- read.csv("playback_selection_table_frogs_OTS_2021.csv")
+
+pth <- "./data/raw/re-recorded_files/"
+found.starts <- search_templates(X = master.sf, template.rows = which(master.sf$orig.sound.file == 
+    "end_marker"), test.files = rr_wvs, path = pth)
+
+
+alg.tests <- align_test_files(X = master.sf, Y = found.starts, path = pth, by.song = TRUE, marker = "end")
+
+alg.tests$transect <- sapply(strsplit(alg.tests$sound.files, "_"), "[[", 1)
+
+alg.tests$distance <- sapply(strsplit(alg.tests$sound.files, "_"), "[[", 2)
+alg.tests$distance <- as.numeric(gsub("md", "", alg.tests$distance))
+
+alg.tests$height <- sapply(strsplit(alg.tests$sound.files, "_"), "[[", 3)
+alg.tests$height <- as.numeric(gsub("mh", "", alg.tests$height))
+
+
+sp_names <- data.frame(curr = unique(rav_dat$sound.files), new = c("C. crassidigitus", "C. fitzingeri", "C. granulosa", "D. auratus", "D. diastema", "D. ebracattus", "D phlebodes", "S. puma", "S. sordida", "H. fleischmanni", "H. valeroi", "L. savagei", "O. pumilio", "P. lugubris", "P. ridens", "P. vitattus", "S. elaeochroa", "S. boulengeri")) 
+
+
+for(i in 1:nrow(sp_names))
+    alg.tests$template <- gsub(sp_names$curr[i], sp_names$new[i], alg.tests$template)
+
+alg.tests$species <- sapply(strsplit(alg.tests$template, "_"), "[[", 1)
+
+saveRDS(alg.tests, "./data/processed/extended_selection_table_rerecorded_signals.RDS")
+
+
+```
+
+
+```{r measure degradation}
+
+alg.tests <- readRDS("./data/processed/extended_selection_table_rerecorded_signals.RDS")
+
+# remove distance 1 from 2 second transect
+alg.tests <- alg.tests[!(alg.tests$transect == "t2" & alg.tests$distance == 1), ]
+
+table(alg.tests$distance, alg.tests$transect)
+
+alg.tests$signal.type <- paste(alg.tests$template, alg.tests$height, sep = "_")
+
+alg.tests <- alg.tests[grep("marker", alg.tests$template, invert = TRUE), ]
+
+table(alg.tests$signal.type, alg.tests$distance)
+
+catalog(X = alg.tests, flim = c(0.1, 6), nrow = 12, ncol = 15, ovlp = 70, pb = TRUE,
+        height = 15, width = 23, same.time.scale = TRUE, mar = 0.005, wl = 250, gr = FALSE, 
+        spec.mar = 0.4, lab.mar = 0.8, rm.axes = TRUE, by.row = TRUE, parallel = 3,
+        box = TRUE, path = pth, labels = "selec", fast.spec = TRUE, pal = viridis)
+
+move_imgs(from = "./data/raw/re-recorded_files", to = "./data/raw/re-recorded_files", overwrite = TRUE)
+
+
+out <- lapply(unique(alg.tests$signal.type), function(x){
+
+    print(x)    
+# run blur ratio
+br <- try(blur_ratio(alg.tests[alg.tests$signal.type == x, ], method = 1, pb = TRUE, output = "data.frame", parallel = 3), silent = TRUE)
+
+if (is(br, "try-error")) br <- NULL
+
+return(br)    
+    
+})
+
+br_l <- out[!sapply(out, is.null)]
+
+br_l <- lapply(br_l, data.frame)
+
+length(out)
+length(br_l)
+
+alg_br <- do.call(rbind, br_l)
+
+saveRDS(alg_br, "./data/processed/blu_ratio_df.RDS")
+
+```
+
+
+```{r measure degradation 2}
+
+alg.tests2 <- alg.tests[alg.tests$signal.type %in% unique(alg_br$signal.type), ]
+
+env_cor <- envelope_correlation(alg.tests2, method = 1, pb = TRUE, output = "data.frame", parallel = 3)
+
+saveRDS(env_cor, "./data/processed/envelope_correlation_df.RDS")
+
+```
+
+
+```{r measure degradation 3}
+
+xc <- spcc(alg.tests2, method = 1, pb = TRUE, output = "data.frame", parallel = 3)
+
+xc$cross.correlation <- as.numeric(xc$cross.correlation)
+
+xc <- data.frame(xc)
+
+saveRDS(xc, "./data/processed/cross_correlation_df.RDS")
+
+
+```
+
+
+
+```{r measure degradation 3}
+
+
+ea <- excess_attenuation(alg.tests2, method = 1, pb = TRUE, output = "data.frame", parallel = 3)
+
+ea <- data.frame(ea)
+
+saveRDS(ea, "./data/processed/excess_attenuation_df.RDS")
+
+
+```
+
+```{r}
+
+# run signal to noise ratio
+snratio <-  signal_2_noise(alg.tests2, pb = TRUE, parallel = 3, mar = 0.01, type = 2)
+
+# check output class
+snratio <- data.frame(snratio)
+
+saveRDS(snratio, "./data/processed/signal_to_noise_ratio_df.RDS")
+
+```
+
+
+```{r}
+
+# run signal to noise ratio
+tsr <-  tail_to_signal_ratio(alg.tests2, pb = TRUE, parallel = 3, mar = 0.01)
+
+# check output class
+tsr <- data.frame(tsr)
+
+saveRDS(tsr, "./data/processed/tail_to_signal_ratio_df.RDS")
+
+
+```
+
+```{r}
+
+results <- alg.tests2
+results$sf_templ <- paste(results$template, results$sound.files, sep = "-")
+alg_br$sf_templ <- paste(alg_br$template, alg_br$sound.files, sep = "-")
+
+results <- merge(results, alg_br[, c("sf_templ", "blur.ratio")])
+
+env_cor$sf_templ <- paste(env_cor$template, env_cor$sound.files, sep = "-")
+
+results <- merge(results, env_cor[, c("sf_templ", "envelope.correlation")])
+
+xc$sf_templ <- paste(xc$template, xc$sound.files, sep = "-")
+
+results <- merge(results, xc[, c("sf_templ", "cross.correlation")])
+
+ea$sf_templ <- paste(ea$template, ea$sound.files, sep = "-")
+
+results <- merge(results, ea[, c("sf_templ", "excess.attenuation")])
+
+tsr$sf_templ <- paste(tsr$template, tsr$sound.files, sep = "-")
+
+results <- merge(results, tsr[, c("sf_templ", "tail.to.signal.ratio")])
+
+snratio$sf_templ <- paste(snratio$template, snratio$sound.files, sep = "-")
+
+results <- merge(results, snratio[, c("sf_templ", "SNR")])
+
+nrow(results)
+
+r2 <- results[results$distance != 1, ]
+
+
+library(readxl)
+
+dt <- read_xlsx("data/raw/recording_list.xlsx")
+
+r2$species[r2$species == "D phlebodes"] <- "D. phlebodes"
+
+
+r2$species.stratum <- sapply(1:nrow(r2), function(x){
+  
+  dt$level[dt$species2 == r2$species[x]][1]
+  
+})
+
+r2$species.stratum[r2$species.stratum == "intermediate"] <- "medium"
+
+r2 <- r2[r2$species != "S. boulengeri", ]
+
+r2$playback.stratum <- as.character(r2$height)
+r2$playback.stratum[r2$playback.stratum == "0.5"] <- "low"
+r2$playback.stratum[r2$playback.stratum == "1.5"] <- "medium"
+r2$playback.stratum[r2$playback.stratum == "2.5"] <- "high"
+
+r2$playback.stratum <- factor(r2$playback.stratum, levels = c("low", "medium", "high"))
+r2$species.stratum <- factor(r2$species.stratum, levels = c("low", "medium", "high"))
+
+saveRDS(r2, "./data/processed/degradation_parameters.RDS")
+
+```
+
+
+
+
+
+
+
